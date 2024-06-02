@@ -42,9 +42,10 @@ class Cityscapes(torchvision.datasets.Cityscapes):
                 return f'{mode}_labelIds.png'
             
 class SEBENS(torch.utils.data.Dataset):
-    def __init__(self, root, transform=None, train=True):
+    def __init__(self, root, transform=None, target_transform=None, train=True):
         self.root = Path(root)
         self.transform = transform
+        self.target_transform = target_transform
         self.train = train
 
         self.num_classes = 61
@@ -69,7 +70,11 @@ class SEBENS(torch.utils.data.Dataset):
 
         if self.transform:
             image = self.transform(image)
-            label = self.transform(label)
+        if self.target_transform:
+            label = self.target_transform(label)
+
+        # Convert label to a LongTensor
+        label = torch.from_numpy(np.array(label)).long()
 
         return image, label
     
@@ -118,3 +123,4 @@ class CORALES(torch.utils.data.Dataset):
         label = torch.from_numpy(np.array(label)).long()
         
         return image, label
+    
