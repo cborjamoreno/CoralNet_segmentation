@@ -48,7 +48,7 @@ class SEBENS(torch.utils.data.Dataset):
         self.target_transform = target_transform
         self.train = train
 
-        self.num_classes = 61
+        self.num_classes = 62
         self.ignore_index = 0
 
         if self.train:
